@@ -1,6 +1,6 @@
 'use client';
 import {createContext,useContext,useEffect,useMemo,useState} from 'react';
-import {lessons} from './data';
+import {courseLessons as lessons} from './course';
 export type StudentState={xp:number;streak:number;hearts:number;maxHearts:number;completedLessons:string[];currentLessonId:string|null;learnedVocabulary:string[];unlockedBadges:string[];completedChallenges:number;dailyGoalMinutes:number;dailyProgressMinutes:number;lastActiveDate:string|null;activityDates:string[];finalChallengeCompleted:boolean;awardedRewards:string[]};
 export const initialStudent:StudentState={xp:0,streak:0,hearts:5,maxHearts:5,completedLessons:[],currentLessonId:null,learnedVocabulary:[],unlockedBadges:[],completedChallenges:0,dailyGoalMinutes:10,dailyProgressMinutes:0,lastActiveDate:null,activityDates:[],finalChallengeCompleted:false,awardedRewards:[]};
 const STORAGE_KEY='ai-lingo-state'; const dateKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}; const daysBetween=(a:string,b:string)=>Math.round((Date.parse(b+'T00:00:00')-Date.parse(a+'T00:00:00'))/86400000);
