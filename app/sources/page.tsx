@@ -26,7 +26,7 @@ export default function SourcesPage() {
     () =>
       courseSources.filter((source) => {
         const text =
-          `${source.title} ${source.organization} ${source.description} ${source.units.join(" ")}`.toLowerCase();
+          `${source.title} ${source.organization} ${source.description} ${source.units.join(" ")} ${source.lessons.join(" ").replaceAll("-", " ")}`.toLowerCase();
         return (
           text.includes(query.toLowerCase()) &&
           (filter === "All" ||
@@ -57,14 +57,14 @@ export default function SourcesPage() {
         {filters.map((item) => (
           <button
             key={item}
-            onClick={() => setFilter(item)}
+            onClick={() => { setFilter(item); setOpen(item === "All" || item === "Research" ? null : item); }}
             className={filter === item ? "selected" : ""}
           >
             {item}
           </button>
         ))}
       </div>
-      {units.map((unit) => {
+      {filter !== "Research" && units.map((unit) => {
         const unitSources = visible.filter((source) =>
           source.units.includes(unit),
         );
@@ -79,7 +79,7 @@ export default function SourcesPage() {
               <span>{unit.toUpperCase()} SOURCES</span>
               <b>{open === unit ? "−" : "+"}</b>
             </button>
-            {open === unit && (
+            {(open === unit || (filter === "All" && (!!query || open === null))) && (
               <div className="source-grid">
                 {unitSources.map((source) => (
                   <article className="source-card" key={source.id}>
