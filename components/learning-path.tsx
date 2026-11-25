@@ -1,11 +1,12 @@
 'use client';
 import {useEffect, useState} from 'react';
 import Link from 'next/link';
-import {Award, BookOpen, BrainCircuit, Check, ChevronDown, Flame, Heart, Lock, Sparkles, Trophy, Zap} from 'lucide-react';
+import {Award, BookOpen, BrainCircuit, Check, ChevronDown, Database, Flame, Heart, Lightbulb, Lock, MessageSquare, Scale, Search, ShieldCheck, Trophy, Zap} from 'lucide-react';
 import {courseLessons as lessons} from '../lib/course';
 import {formatLearningTime,useStudent} from '../lib/student';
 
 const offsets = [50, 59, 50, 41];
+const lessonIcons = [BrainCircuit,Lightbulb,BrainCircuit,Zap,Lightbulb,BrainCircuit,Database,MessageSquare,MessageSquare,MessageSquare,BookOpen,Search,ShieldCheck,Scale,Search,Lock,Award,ShieldCheck];
 const rowHeight = 150;
 const milestones: Record<number, string> = {3: 'AI Foundations', 8: 'AI Lingo', 12: 'Using AI', 17: 'Responsible AI'};
 const x = (i: number) => offsets[i % offsets.length];
@@ -40,24 +41,24 @@ export function LearningPath() {
   });
   const height = y(lessons.length) + 140;
   return <div className="journey-page">
-    <header className="journey-header"><div><span className="eyebrow">Your AI journey</span><h1>One concept at a time.</h1><p>Follow the path and build your AI fluency.</p></div><div className="journey-stats" aria-label="Your learning stats"><span><Flame/> {student.streak} day streak</span><span><Zap/> {student.xp} XP</span><span><Heart/> {student.hearts}/{student.maxHearts}</span></div></header>
+    <header className="journey-header"><div><span className="eyebrow">Your AI journey</span><h1>Learn the language of AI</h1><p>Follow the path from first concepts to responsible practice</p></div><div className="journey-stats" aria-label="Your learning stats"><span><Flame/> {student.streak} day streak</span><span><Zap/> {student.xp} XP</span><span><Heart/> {student.hearts}/{student.maxHearts}</span></div></header>
     <div className="journey-layout">
       <section className="adventure-path" aria-label="Complete learning path" style={{height}}>
-        <div className="adventure-intro"><span>THE LEARNING PATH</span><strong>Ready when you are <Sparkles size={17}/></strong></div>
+        <div className="adventure-intro"><span>Learning path</span><strong>Follow your progress</strong></div>
         <svg className="adventure-lines" viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" aria-hidden="true">{lessons.map((lesson, i) => <path key={lesson.id} d={segment(i)} className={student.completedLessons.includes(lesson.id) ? 'line-complete' : ''}/>)}</svg>
         {lessons.map((lesson, i) => {
           const done = student.completedLessons.includes(lesson.id), unlocked = isUnlocked(lesson.id), current = i === currentIndex;
-          const status = done ? 'done' : current ? 'current' : 'locked';
+          const status = done ? 'done' : current ? 'current' : 'locked'; const Icon = lessonIcons[i] || BrainCircuit;
           return <div key={lesson.id} id={current ? 'current-learning-stop' : undefined} className={`adventure-stop ${status}`} style={{top: y(i), left: `${x(i)}%`}}>
-            {current && <span className="start-flag">START</span>}
-            {unlocked ? <Link className="adventure-node" href={`/lesson/${lesson.id}`} onClick={() => sessionStorage.setItem('ai-lingo-return-from-lesson', 'true')} aria-label={`${lesson.title}, ${done ? 'review' : 'start lesson'}`}>{done ? <Check/> : <span aria-hidden="true">{lesson.icon}</span>}</Link> : <button className="adventure-node" onClick={() => setNotice(`Complete ${lessons[i - 1]?.title ?? 'the previous lesson'} first to unlock ${lesson.title}.`)} aria-label={`${lesson.title}, locked`}><span aria-hidden="true">{lesson.icon}</span><Lock className="node-lock" size={14}/></button>}
+            {current && <span className="start-flag">Start</span>}
+            {unlocked ? <Link className="adventure-node" href={`/lesson/${lesson.id}`} onClick={() => sessionStorage.setItem('ai-lingo-return-from-lesson', 'true')} aria-label={`${lesson.title}, ${done ? 'review' : 'start lesson'}`}>{done ? <Check/> : <Icon aria-hidden="true"/>}</Link> : <button className="adventure-node" onClick={() => setNotice(`Complete ${lessons[i - 1]?.title ?? 'the previous lesson'} first to unlock ${lesson.title}.`)} aria-label={`${lesson.title}, locked`}><Icon aria-hidden="true"/><Lock className="node-lock" size={14}/></button>}
             <div className={`adventure-label ${x(i) >= 50 ? 'label-left' : 'label-right'}`}><span className="adventure-unit">{lesson.unit}</span><strong>{lesson.title}</strong><small>{lesson.description}</small>{current ? <Link href={`/lesson/${lesson.id}`} className="adventure-cta" onClick={() => sessionStorage.setItem('ai-lingo-return-from-lesson', 'true')}>Start lesson <span>→</span></Link> : <span className="adventure-status">{done ? '✓ Completed · review' : 'Locked'}</span>}</div>
             {milestones[i] && <div className="adventure-milestone">{lessons.filter(l => l.unit === lesson.unit).every(l => student.completedLessons.includes(l.id)) ? '✓ Unit complete' : 'Unit milestone'} · {milestones[i]}</div>}
           </div>;
         })}
         <div id={currentIndex === lessons.length ? 'current-learning-stop' : undefined} className="adventure-stop final-stop" style={{top:y(lessons.length),left:`${x(lessons.length)}%`}}>
           <Link href="/challenge" className="adventure-node" aria-label="AI Lingo final challenge"><Trophy size={36}/></Link>
-          <div className="adventure-label label-left"><span className="adventure-unit">FINAL DESTINATION</span><strong>AI Lingo Final Challenge</strong><small>{completed === lessons.length ? "You're ready to prove your AI fluency!" : `Complete all ${lessons.length} lessons to unlock.`}</small><Link href="/challenge" className="adventure-cta">{completed === lessons.length ? 'Start challenge →' : 'View challenge →'}</Link></div>
+          <div className="adventure-label label-left"><span className="adventure-unit">Final destination</span><strong>AI Lingo Final Challenge</strong><small>{completed === lessons.length ? "Your final challenge is ready" : `Complete all ${lessons.length} lessons to continue`}</small><Link href="/challenge" className="adventure-cta">{completed === lessons.length ? 'Start challenge →' : 'View challenge →'}</Link></div>
         </div>
       </section>
       <aside className="journey-rail adventure-rail">
