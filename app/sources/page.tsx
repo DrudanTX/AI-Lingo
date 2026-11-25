@@ -39,7 +39,7 @@ export default function SourcesPage() {
   const units = ["Unit 1", "Unit 2", "Unit 3", "Unit 4"];
   return (
     <>
-      <h1 className="page-title">Sources &amp; References</h1>
+      <h1 className="page-title">References &amp; Copyright</h1>
       <p className="page-sub">
         Explore the research, educational resources, and trusted organizations
         behind AI Lingo&apos;s lessons.
@@ -131,6 +131,20 @@ export default function SourcesPage() {
           <p className="page-sub">Try another search or filter.</p>
         </div>
       )}
+      <section className="card" style={{ marginTop: 28 }}>
+        <h2>Competition documentation</h2>
+        <p>The following documents must be completed and supplied by the student team before submission. They are not currently available.</p>
+        <ul>
+          <li>Student Copyright Checklist — official completed PDF required (one page maximum).</li>
+          <li>Resources and AI Reflection — official completed PDF required (four pages maximum).</li>
+          <li>Student Work Log — completed state documentation required; verify the applicable format with your advisor.</li>
+        </ul>
+      </section>
+      <section className="card" style={{ marginTop: 16 }}>
+        <h2>Generative AI and design</h2>
+        <p>ChatGPT and Codex assisted with development, including code, design ideas, and educational content. The student team should review, verify, and describe its own contributions and decisions in the required reflection. This statement does not substitute for that completed form.</p>
+        <p>AI Lingo uses general learning mechanics such as sequential lessons, experience points, and streaks. It is not affiliated with or endorsed by Duolingo.</p>
+      </section>
       <section className="card" style={{ marginTop: 28 }}>
         <h2>Additional research references</h2>
         <p>The Research Center also refers to these resources:</p>
